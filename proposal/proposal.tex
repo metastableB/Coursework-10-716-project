@@ -94,12 +94,12 @@
 % Custom Macros
 \usepackage{mymacros}
 
-\title{{Heterogeneity for the Win: \\Communication-Efficient Federated Clustering}}
+\title{{Convergence Analysis of Local Update Methods}}
 \author{
   Don Kurian Dennis \\ \small Carnegie Mellon University \\ \footnotesize
   \texttt{\href{mailto:dondennis@cmu.edu}{dondennis@cmu.edu}} \and
-  \textbf{Virginia Smith} \\ \small Carnegie Mellon University \\ \footnotesize
-  \texttt{\href{mailto:smithv@cmu.edu}{smithv@cmu.edu}}
+  \textbf{Shuhua Yu} \\ \small Carnegie Mellon University \\ \footnotesize
+  \texttt{\href{mailto:smithv@cmu.edu}{shuhuay@andrew.cmu.edu}}
 }
 
 
@@ -107,9 +107,71 @@
 \begin{document}
 
 \maketitle
-\begin{abstract}
-  %\input{sections/01-abstract.tex}
-\end{abstract}
+
+\section{Introduction}
+
+\vspace*{-1mm}
+One of the go to optimization procedure used in many large scale optimization
+tasks is mini-batch stochastic gradient descent (SGD). Conceptually speaking,
+in minibatch-SGD when optimizing over $\theta \in \Theta$, at $t =
+0$, we start of at some $\theta^{(0)}$ and apply the following update rule at
+each step $t$,
+\begin{align*}
+  \theta^{(t+1)} \leftarrow \theta^{(t)} - \eta_t g_t.
+\end{align*} Here $g_t$ is a stochastic gradient, with the property that $\E
+g_t = \grad f(x_t)$. Compared to traditional gradient descent, replacing the
+full gradient computation in with the stochastic gradient decreases the memory
+and compute requirement for each step. Moreover, the stochastic gradient
+computation step can be easily parallelized and enjoys a linear speedup with
+the number of workers. Such parallelization is beneficial in scenarios where
+the computation is the bottleneck and communication is cheap --- for instance
+in data local clusters.  However, as more and more machine learning moves
+towards edge computing nodes (ex, mobile phones and fitness trackers), new
+settings arise where communication cost is a significant bottle neck. A prime
+example being Federated Learning (FL).
+
+For such settings, a very natural change one can introduce to SGD to reduce
+communication costs is performing \textit{local updates}. That is, each worker
+$k$ starts of with the same parameters $w_k^{(0)} = w_0$, and perform say $M$
+local updates,
+\[
+  w_k^{(t+1)} = w_k^{(t)} - \eta_t g_t,
+\] before the parameters on each of the workers is finally combined and
+re-synchronized.
+
+Many methods loosely based on local updates have been proposed and have seen
+success in practice (ex. FedAvg), but the convergence analysis for these
+methods even for convex case is only being understood now. We wish to go deeper
+into the relevant literature to get a better picture of questions in this
+space.
+
+\section{Reading List}
+
+\vspace*{-1mm} We plan to go over two main results.
+\begin{enumerate}
+  \item Local SGD Converges Fast and Communicates Little, \textit{Sebastian U.
+    Stich}.
+
+    This paper shows precise convergence analysis for local SGC on convex
+    problem. This paper though, does not show that there is an advantage in
+    termsof number of evaluated gradients when compared to mini-batch SGD. One
+    of our goals would be to get some intuition regarding the difficulty here.
+
+  \item Sub-Sampled Newton Methods: Globally Convergent Algorithms,
+    \textit{Farbod Roosta-Khorasani, Michael W. Mahoney}
+
+    This paper analyse second-order sub-sampled methods. They show global
+    convergent rates of certain sub-sampled second order methods on convex
+    problems. Or main goal for this paper would be a summary of the main
+    arguments of the proofs used. As an additional goal, we wish to use the
+    second-order sampling method used herein to see if it can be used to get an
+    efficient yet faster algorithm for communication bottlenecked distributed
+    optimization settings.
+\end{enumerate}
+
+%\begin{abstract}
+  %%\input{sections/01-abstract.tex}
+%\end{abstract}
 %\input{sections/02-intro.tex}
 %\input{sections/04-background.tex}
 %\input{sections/03-method.tex}
@@ -118,12 +180,12 @@
 %\input{sections/07-conclusion.tex}
 
 % References
-\newpage
-\bibliographystyle{abbrvnat}
-\bibliography{references}
+%\newpage
+%\bibliographystyle{abbrvnat}
+%\bibliography{references}
 
 % Appendix
-\newpage
+%\newpage
 %\appendix
 %\input{sections/08-appendixA.tex}
 %\newpage
