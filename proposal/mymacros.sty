@@ -1,0 +1,171 @@
+%% Block Indent, Block Quote, Comment, Quote
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{indentquote}%
+{%
+  \par%
+  \medskip%
+  \leftskip=4em\rightskip=2em%
+  \noindent\ignorespaces%
+}%
+{%
+  \par\medskip%
+}%
+%% Changing absolute value symbols and behaviour
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Swap absolute value symbols (requires mathtools)
+%% Based on https://tex.stackexchange.com/a/43009
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+\newcommand{\snorm}[1]{\|#1\|}
+% Todo and notes
+%%%%%%%%%%%%%%%
+%% Documentation of todo notes and a few examples are here
+%% https://tex.stackexchange.com/a/355700
+%%
+%% margin-comment
+\newcommand{\todomc}[1]
+  {\todo[noline, bordercolor=black, backgroundcolor=white!20]{#1}}
+%% margin-comment-important
+\newcommand{\todomcimp}[1]
+  {\todomc{\faExclamationTriangle$\quad$#1}}
+%% comment-don
+\newcommand{\tododon}[1]
+  {\todo{\emph{Don: }#1}}
+%\newcommand{\gs}[1]{{\color{red}{#1}}}
+\newcommand{\gs}[1]
+  {\todo[bordercolor=black, backgroundcolor=white!20]{\emph{Ginger: }#1}}
+%% inline-yellow
+\newcommand{\todoiny}[1]
+  {\todo[inline, bordercolor=yellow, backgroundcolor=yellow!20]{#1}}
+\newcommand{\todoinr}[1]
+  {\textcolor{red}{#1}}
+\newcommand{\todoy}[1]
+  {\todo[bordercolor=yellow, backgroundcolor=yellow!20]{#1}}
+%% My inline notes
+
+
+
+% Theorems and definitions:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Refer:  https://www.overleaf.com/learn/latex/Theorems_and_proofs
+%% Refer above for how numbering works and what exactly the following
+%% arguments are. The proof environment {\begin{proof}\end{proof}} is already
+%% provided by the asmthm environment
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[lemma]
+\newtheorem*{remark}{Remark}
+\newtheorem{prop}{Proposition}
+\newtheorem{claim}{Claim} 
+
+
+% Define a \tag command to tag equations inside align*. You also have to label
+% Also, when referring to equations, use \eqref{label}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
+
+
+%%%%%%%%%%%%%
+% Symbols
+% --------
+% WARNING: At some point it is going to get hard to find vectors and there is
+% always the fear of accidentally redefining symbols because we forgot they
+% were previously defined. I'm including comments against each main operator to
+% prevent this. These can be used for plain text searches.
+%%%%%%%%%%%%%
+\newcommand{\vecsmall}[1]{\mathbf{#1}}
+\newcommand{\veccaps}[1]{\mathbf{#1}}
+% Small letters vectors
+\newcommand{\vx}{\vecsmall{x}}
+\newcommand{\vy}{\vecsmall{y}}
+\newcommand{\vc}{\vecsmall{c}}
+\newcommand{\vh}{\vecsmall{h}}
+\newcommand{\vw}{\vecsmall{w}}
+\newcommand{\vone}{\vecsmall{1}}
+% Capital letters Vectors
+\newcommand{\vH}{\veccaps{H}}
+% Partial derivative
+\newcommand{\pder}[2]{\frac{\partial{#1}}{\partial{#2}}}
+% Nabla for gradient
+\newcommand{\grad}{\nabla}
+% Transpose
+\newcommand{\tr}{{}^\top}
+% Diagonalize vectors
+\newcommand{\diag}{\mathbf{diag}}
+%% matrix greater less
+\newcommand{\mge}{\succeq}
+\newcommand{\mle}{\preceq}
+\newcommand{\ml}{\prec}
+\newcommand{\mg}{\succ}
+%% Real-Number and other symbols
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+%% Limit n tending to infinity
+\newcommand{\liminfty}[1]{\lim_{{#1\rightarrow\infty}}}
+\newcommand{\limab}[2]{\lim_{{#1\rightarrow #2}}}
+%% Epsilon
+\newcommand{\eps}{\epsilon}
+%% Argmax and argmin
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+%% Inner product
+\newcommand{\innp}[1]{\langle #1 \rangle}
+\newcommand{\Innp}[1]{\left\langle #1 \right\rangle}
+%% Math format shortcuts
+\newcommand{\mbb}[1]{\mathbb{#1}}
+\newcommand{\mrm}[1]{\mathrm{#1}}
+%% Prox operator
+\newcommand{\prox}{\mathrm{prox}}
+%% Rank matrix
+\newcommand{\rank}{\mathrm{rank}}
+%% Domain
+\newcommand{\dom}[1]{\mathbf{dom}~#1}
+%% Set
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\Set}[1]{\left\{#1\right\}}
+%% Set complement
+\newcommand{\setc}[1]{{#1}^{\mathsf{c}}}
+% Expection E
+\newcommand{\E}{\mathbb{E}}
+%% probability function
+\newcommand{\pr}{\mathbb{P}}
+
+
+% Project specific
+%%%%%%%%%%%%%%%%%%%
+% Here is where all your project specific settings go. Some examples provided.
+% Optimal x
+\newcommand{\px}{x^*}
+\newcommand{\tilx}{\tilde{x}}
+%% Notice \xspace for accurate spacing: https://tex.stackexchange.com/a/17731
+\newcommand{\kmeans}{k-means\xspace}
+\newcommand{\fR}{\mathcal{R}}
+\newcommand{\op}[1]{\norm{#1}}
+\newcommand{\ops}[1]{\norm*{#1}}
+\newcommand{\ltwo}[1]{\norm{#1}_{2}}
+\newcommand{\ltwos}[1]{\norm*{#1}_{2}}
+\newcommand{\fb}[1]{\norm{#1}_{\text{F}}}
+\newcommand{\fbs}[1]{\norm*{#1}_{\text{F}}}
+
+\newcommand{\algoA}{Algorithm-1\xspace}
+\newcommand{\algoB}{Algorithm-2\xspace}
+\newcommand{\kfed}{{\textsc{\textit{k}-FED}}\xspace}
+\newcommand{\matA}{\mathbf{A}}
+\newcommand{\matC}{\mathbf{C}}
+\newcommand{\dev}[1]{{(#1)}}
+\newcommand{\devz}{{(z)}}
+\newcommand{\cdon}[1]{}%{\textcolor{blue}{#1}}
